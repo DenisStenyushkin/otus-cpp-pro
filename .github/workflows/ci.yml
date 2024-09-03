@@ -2,12 +2,15 @@ name: 'C++ CI'
 
 on: [push]
 
+env:
+  WORK_DIR: ./hw1
+
 jobs:
   build:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./hw1
+        working-directory: ${{ env.WORK_DIR }}
     steps:
       - name: Project checkout
         uses: actions/checkout@v2
@@ -43,6 +46,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: hw1/helloworld-0.0.${{ github.run_number }}-Linux.deb
+          asset_path: ${{ env.WORK_DIR }}/helloworld-0.0.${{ github.run_number }}-Linux.deb
           asset_name: helloworld-0.0.${{ github.run_number }}-Linux.deb
           asset_content_type: application/vnd.debian.binary-package
