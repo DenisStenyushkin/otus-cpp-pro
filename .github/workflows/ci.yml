@@ -16,7 +16,7 @@ jobs:
       - name: GTest download
         run: git clone https://github.com/google/googletest.git googletest
       - name: GTest compile and install
-        working-directory: ./googletest
+        working-directory: googletest
         run: |
           sudo cmake .
           sudo cmake --build . --target install
