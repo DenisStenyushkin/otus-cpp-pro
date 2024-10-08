@@ -3,7 +3,7 @@ name: 'C++ CI'
 on: [push]
 
 env:
-  WORK_DIR: ./hw1
+  WORK_DIR: ./hw2
 
 jobs:
   build:
@@ -46,6 +46,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.WORK_DIR }}/helloworld-0.0.${{ github.run_number }}-Linux.deb
-          asset_name: helloworld-0.0.${{ github.run_number }}-Linux.deb
+          asset_path: ${{ env.WORK_DIR }}/hw-0.0.${{ github.run_number }}-Linux.deb
+          asset_name: hw-0.0.${{ github.run_number }}-Linux.deb
           asset_content_type: application/vnd.debian.binary-package
