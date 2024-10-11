@@ -34,14 +34,14 @@ void print(const std::vector<Ip> ip_pool) {
         }
 }
 
-std::vector<Ip> filter(const std::vector<Ip> ip_pool, u_int8_t value) {
+std::vector<Ip> filter(const std::vector<Ip>& ip_pool, u_int8_t value) {
     std::vector<Ip> res;
     std::copy_if(ip_pool.begin(), ip_pool.end(), std::back_inserter(res),
         [value](Ip elem) { return std::stoi(elem[0]) == value; });
     return res;
 }
 
-std::vector<Ip> filter(const std::vector<Ip> ip_pool, u_int8_t value1, u_int8_t value2) {
+std::vector<Ip> filter(const std::vector<Ip>& ip_pool, u_int8_t value1, u_int8_t value2) {
     std::vector<Ip> res;
     std::copy_if(ip_pool.begin(), ip_pool.end(), std::back_inserter(res),
         [value1, value2](Ip elem) {
@@ -50,7 +50,7 @@ std::vector<Ip> filter(const std::vector<Ip> ip_pool, u_int8_t value1, u_int8_t 
     return res;
 }
 
-std::vector<Ip> filter_any(const std::vector<Ip> ip_pool, u_int8_t value) {
+std::vector<Ip> filter_any(const std::vector<Ip>& ip_pool, u_int8_t value) {
     std::vector<Ip> res;
     std::copy_if(ip_pool.begin(), ip_pool.end(), std::back_inserter(res),
         [value](Ip elem) {
