@@ -18,7 +18,7 @@ struct IpComparatorDesc {
     };
 };
 
-void print(const std::vector<Ip> ip_pool) {
+void print(const std::vector<Ip>& ip_pool) {
     for(auto ip = ip_pool.cbegin(); ip != ip_pool.cend(); ++ip)
         {
             for(auto ip_part = ip->cbegin(); ip_part != ip->cend(); ++ip_part)
