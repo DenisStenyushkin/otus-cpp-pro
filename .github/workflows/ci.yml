@@ -3,7 +3,7 @@ name: 'C++ CI'
 on: [push]
 
 env:
-  WORK_DIR: ./hw2
+  WORK_DIR: ./hw5
 
 jobs:
   build:
@@ -18,16 +18,10 @@ jobs:
           submodules: true
       - name: GTest download
         run: git clone https://github.com/google/googletest.git googletest
-      - name: GTest compile and install
-        run: |
-          cd ./googletest
-          sudo cmake .
-          sudo cmake --build . --target install
       - name: Project build
         run: |
           cmake . -DPATCH_VERSION=${{ github.run_number }}
           cmake --build .
-          cmake --build . --target test
           cmake --build . --target package
       - name: Create Release
         id: create_release
@@ -46,6 +40,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.WORK_DIR }}/ip_filter-0.0.${{ github.run_number }}-Linux.deb
-          asset_name: ip_filter-0.0.${{ github.run_number }}-Linux.deb
+          asset_path: ${{ env.WORK_DIR }}/editor-0.0.${{ github.run_number }}-Linux.deb
+          asset_name: editor-0.0.${{ github.run_number }}-Linux.deb
           asset_content_type: application/vnd.debian.binary-package
