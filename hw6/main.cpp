@@ -20,4 +20,8 @@ int main() {
     }
 
     std::cout << matrix.size() << std::endl;
+
+    for (auto& [i, j, value]: matrix) {
+        std::cout << "[" << i << "]" << "[" << j << "] = " << value << std::endl;
+    }
 }
