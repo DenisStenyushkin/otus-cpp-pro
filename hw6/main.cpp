@@ -24,4 +24,7 @@ int main() {
     for (auto& [i, j, value]: matrix) {
         std::cout << "[" << i << "]" << "[" << j << "] = " << value << std::endl;
     }
+
+    ((matrix[100][100] = 1) = 0) = 100;
+    std::cout << "matrix[100][100] = " << matrix[100][100] << std::endl;
 }

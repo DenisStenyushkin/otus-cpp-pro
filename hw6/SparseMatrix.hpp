@@ -22,42 +22,29 @@ public:
         operator std::tuple<std::size_t, std::size_t, TVal>() const {
             return std::make_tuple(i, j, value);
         }
+
+        operator TVal() const {
+            return value;
+        }
+
+        template<typename T>
+        SparseElement& operator=(const T& v) {
+            value = v;
+            return *this;
+        }
     };
 
     class RowIndexProxy {
     public:
         RowIndexProxy(SparseMatrix& matrix, std::size_t i) : m_matrix{matrix}, m_i{i} {}
 
-        TVal& operator[](std::size_t j) {
-            return m_matrix.at(m_i, j).value;
+        SparseElement& operator[](std::size_t j) {
+            return m_matrix.at(m_i, j);
         }
     private:
         SparseMatrix& m_matrix;
         std::size_t m_i;
     };
-
-    // struct Iterator
-    // {
-    //     using iterator_category = std::input_iterator_tag;
-    //     using difference_type = std::ptrdiff_t;
-    //     using value_type = std::tuple<std::size_t, std::size_t, TVal>;
-    //     using pointer = value_type*;
-    //     using reference = value_type&;
-
-    //     Iterator(const TMatrix& matrix) : m_matrix{matrix} {
-    //         m_over_rows_iterator = m_matrix.begin();
-    //         if (m_over_rows_iterator != m_matrix.end()) {
-    //             m_over_cols_iterator = m_over_rows_iterator->begin();
-    //         }
-    //         else {
-    //             m_over_cols_iterator = nullptr;
-    //         }
-    //     }
-    // private:
-    //     const TMatrix& m_matrix;
-    //     typename TMatrix::iterator m_over_rows_iterator;
-    //     typename TRow::iterator m_over_cols_iterator;
-    // };
 
     SparseMatrix() = default;
     SparseMatrix(const SparseMatrix<TVal, default_value>& other) = delete;
