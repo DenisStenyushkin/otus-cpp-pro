@@ -3,7 +3,7 @@ name: 'C++ CI'
 on: [push]
 
 env:
-  WORK_DIR: ./hw3
+  WORK_DIR: ./hw4
 
 jobs:
   build:
@@ -27,7 +27,6 @@ jobs:
         run: |
           cmake . -DPATCH_VERSION=${{ github.run_number }}
           cmake --build .
-          # cmake --build . --target test
           cmake --build . --target package
       - name: Create Release
         id: create_release
@@ -46,6 +45,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.WORK_DIR }}/allocator-0.0.${{ github.run_number }}-Linux.deb
-          asset_name: allocator-0.0.${{ github.run_number }}-Linux.deb
+          asset_path: ${{ env.WORK_DIR }}/print_ip-0.0.${{ github.run_number }}-Linux.deb
+          asset_name: print_ip-0.0.${{ github.run_number }}-Linux.deb
           asset_content_type: application/vnd.debian.binary-package
