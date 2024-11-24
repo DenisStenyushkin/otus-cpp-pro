@@ -8,8 +8,16 @@ project(bulk VERSION ${PROJECT_VESRION})
 configure_file(version.h.in version.h)
 
 add_executable(bulk bulk.cpp
+                    BatchInputCommandProcessorState.h
+                    BatchInputCommandProcessorState.cpp
                     CommandProcessor.h
                     CommandProcessor.cpp
+                    CommandProcessorState.h
+                    CommandProcessorState.cpp
+                    CommandProcessorStateFabric.h
+                    CommandProcessorStateFabric.cpp
+                    ScopedInputCommandProcessorState.h
+                    ScopedInputCommandProcessorState.cpp
                     OutputHandler.hpp)
 
 set_target_properties(bulk PROPERTIES
