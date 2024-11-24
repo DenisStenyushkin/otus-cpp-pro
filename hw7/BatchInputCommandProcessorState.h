@@ -20,4 +20,4 @@ public:
     void ExitState() override;
 };
 
-}
+} // namespace CommandProcessing

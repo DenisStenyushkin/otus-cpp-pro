@@ -29,4 +29,4 @@ private:
     std::vector<std::shared_ptr<OutputHandling::OutputHandler>> m_output_handlers;
 };
 
-}
+} // namespace CommandProcessing

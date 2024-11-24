@@ -23,4 +23,4 @@ private:
     int8_t m_num_nested_scopes;
 };
 
-}
+} // namespace CommandProcessing

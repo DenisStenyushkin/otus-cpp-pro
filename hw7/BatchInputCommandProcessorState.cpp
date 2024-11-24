@@ -30,4 +30,4 @@ void BatchInputCommandProcessorState::ExitState() {
     m_processor->ProcessCommands();
 }
 
-}
+} // namespace CommandProcessing
