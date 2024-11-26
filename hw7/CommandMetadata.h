@@ -6,10 +6,18 @@
 
 namespace CommandProcessing {
 
+/**
+ * Описывает метаданные команды
+ */
 struct CommandMetadata {
-    const std::string command;
-    const std::chrono::time_point<std::chrono::system_clock> created_at;
+    const std::string command; ///< Текст команды
+    const std::chrono::time_point<std::chrono::system_clock> created_at; ///< Дата и время создания команды
 
+    /**
+     * Конструктор
+     * 
+     * @param command Текст команды
+     */
     explicit CommandMetadata(const std::string& command)
         : command{command}, created_at{std::chrono::system_clock::now()} {}
 };

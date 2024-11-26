@@ -10,13 +10,38 @@
 
 namespace CommandProcessing {
 
+/**
+ * @brief Состояние обработки пакетов команд динамического размера
+ * 
+ * Состояние процессора команд, когда он обрабатывает команды пакетами динамического размера.
+ * Границы пакета определяются специальными символами.
+ */
 class ScopedInputCommandProcessorState: public CommandProcessorState {
 public:
+    /**
+     * Конструктор
+     * 
+     * @param processor Указатель на процессор команд, к которому относится состояние
+     * @param state_fabric Указатель на фабрику, создающую новые состояния
+     */
     explicit ScopedInputCommandProcessorState(const std::shared_ptr<CommandProcessor> processor,
                                               const std::shared_ptr<CommandProcessorStateFabric> state_fabric);
 
+    /**
+     * Операция, выполняемая при входе в состояние
+     */
     void EnterState() override;
+
+    /**
+     * Обрабатывает очередную поступившую команду
+     * 
+     * @param command Поступившая команда
+     */
     void HandleCommand(const std::string& command) override;
+
+    /**
+     * Операция, выполняемая при выходе из состояния
+     */
     void ExitState() override;
 
 private:

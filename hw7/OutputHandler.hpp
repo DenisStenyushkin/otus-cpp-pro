@@ -12,14 +12,29 @@
 
 namespace OutputHandling {
 
+/**
+ * Чисто виртуальный базовый класс для обработчиков вывода процессора команд
+ */
 class OutputHandler {
 public:
-    // TODO: Accept iterator
+    /**
+     * Обрабатывает вывод пакета команд
+     * 
+     * @param output Список метаданных команд для вывода
+     */
     virtual void Handle(const std::vector<CommandProcessing::CommandMetadata>& output) const = 0;
 };
 
+/**
+ * Реализует вывод пакета команд в консоль
+ */
 class ConsoleOutputHandler: public OutputHandler {
 public:
+/**
+     * Обрабатывает вывод пакета команд
+     * 
+     * @param output Список метаданных команд для вывода
+     */
     void Handle(const std::vector<CommandProcessing::CommandMetadata>& output) const {
         for (const auto& element: output) {
             std::cout << element.command << std::endl;
@@ -27,8 +42,16 @@ public:
     }
 };
 
+/**
+ * Реализует вывод пакета команд в текстовый файл
+ */
 class FileOutputHandler: public OutputHandler {
 public:
+/**
+     * Обрабатывает вывод пакета команд
+     * 
+     * @param output Список метаданных команд для вывода
+     */
     void Handle(const std::vector<CommandProcessing::CommandMetadata>& output) const {
         if (!output.size()) return;
 
