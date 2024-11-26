@@ -9,7 +9,7 @@ CommandProcessorState::CommandProcessorState(std::shared_ptr<CommandProcessor> p
 
 CommandProcessorState::~CommandProcessorState() = default;
 
-std::vector<std::string> CommandProcessorState::GetCommands() {
+std::vector<CommandMetadata> CommandProcessorState::GetCommands() {
     return m_commands;
 }
 

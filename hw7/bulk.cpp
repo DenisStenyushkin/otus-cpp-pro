@@ -14,7 +14,8 @@ int main(int argc, char** argv) {
 
     auto processor = std::shared_ptr<CommandProcessing::CommandProcessor>(
         new CommandProcessing::CommandProcessor{
-            std::make_shared<OutputHandling::ConsoleOutputHandler>()
+            std::make_shared<OutputHandling::ConsoleOutputHandler>(),
+            std::make_shared<OutputHandling::FileOutputHandler>()
         }
     );
 

@@ -10,6 +10,7 @@ configure_file(version.h.in version.h)
 add_executable(bulk bulk.cpp
                     BatchInputCommandProcessorState.h
                     BatchInputCommandProcessorState.cpp
+                    CommandMetadata.h
                     CommandProcessor.h
                     CommandProcessor.cpp
                     CommandProcessorState.h

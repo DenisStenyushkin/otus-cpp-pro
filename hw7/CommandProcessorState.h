@@ -3,6 +3,7 @@
 #include <memory>
 #include <vector>
 
+#include "CommandMetadata.h"
 #include "CommandProcessor.h"
 #include "CommandProcessorStateFabric.h"
 
@@ -23,12 +24,12 @@ public:
     virtual void ExitState() = 0;
 
     // TODO: const vector of const strings
-    virtual std::vector<std::string> GetCommands();
+    virtual std::vector<CommandMetadata> GetCommands();
 
 protected:
     std::shared_ptr<CommandProcessor> m_processor;
     std::shared_ptr<CommandProcessorStateFabric> m_state_fabric;
-    std::vector<std::string> m_commands;
+    std::vector<CommandMetadata> m_commands;
 };
 
 } // namespace CommandProcessing

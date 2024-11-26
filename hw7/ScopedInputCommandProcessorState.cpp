@@ -1,4 +1,5 @@
 #include "ScopedInputCommandProcessorState.h"
+#include "CommandMetadata.h"
 
 namespace CommandProcessing {
 
@@ -20,7 +21,7 @@ void ScopedInputCommandProcessorState::HandleCommand(const std::string& command)
             m_processor->SwitchTo(m_state_fabric->MakeBatch());
         }
     } else {
-        m_commands.push_back(command);
+        m_commands.push_back(CommandMetadata{command});
     }
 }
 

@@ -1,4 +1,5 @@
 #include "BatchInputCommandProcessorState.h"
+#include "CommandMetadata.h"
 
 namespace CommandProcessing {
 
@@ -19,7 +20,7 @@ void BatchInputCommandProcessorState::HandleCommand(const std::string& command) 
         return;
     }
 
-    m_commands.push_back(command);
+    m_commands.push_back(CommandMetadata{command});
     if (m_commands.size() == m_commands.capacity()) {
         m_processor->ProcessCommands();
         m_commands.clear();
