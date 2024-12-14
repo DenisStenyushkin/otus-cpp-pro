@@ -1,6 +1,6 @@
 #include <iostream>
 #include "Parameters.h"
-#include "IChecksumProvider.h"
+#include "Md5ChecksumProvider.h"
 #include "FileMetadata.h"
 #include <boost/filesystem.hpp>
 
@@ -10,15 +10,11 @@ int main(int argc, char** argv) {
     hw8::Parameters params{argc, argv};
     // std::cout << params << std::endl;
 
-    MockChecksumProvider csp;
+    hw8::Md5ChecksumProvider csp;
     fs::path p{"txt1.txt"};
     hw8::FileMetadata md{p, 3, csp};
 
-    std::cout << md.getSize() << std::endl;
-
-    // for (auto it = md.cbegin(); it != md.cend(); ++it) {
-    //     std::cout << *it << std::endl;
-    // }
+    // std::cout << md.getSize() << std::endl;
 
     auto it = md.cbegin();
     auto it1_end = md.cend();
