@@ -74,4 +74,29 @@ void FileMetadata::readNextBlock() const {
     m_checkSums.push_back(m_checksumProvider.CaculateChecksum(buffer.data(), m_fileBlockSize));
 }
 
+FileMetadata::Iterator::Iterator(const FileMetadata* md, std::optional<size_t> index)
+            : m_md{md}, m_index{index} {}
+
+FileMetadata::Iterator::reference FileMetadata::Iterator::operator*() {
+    if (!m_index.has_value()) {
+        throw std::runtime_error("Invalid iterator");
+    }
+    return m_md->m_checkSums[m_index.value()];
+}
+
+FileMetadata::Iterator::pointer FileMetadata::Iterator::operator->() {
+    if (!m_index.has_value()) {
+        throw std::runtime_error("Invalid iterator");
+    }
+    return &(m_md->m_checkSums[m_index.value()]);
+}
+
+bool operator==(const FileMetadata::Iterator& it1, const FileMetadata::Iterator& it2) {
+    return (it1.m_md == it2.m_md) && (it1.m_index == it2.m_index);
+}
+
+bool operator!=(const FileMetadata::Iterator& it1, const FileMetadata::Iterator& it2) {
+    return !(it1 == it2);
+}
+
 } // namespace hw8

@@ -22,36 +22,19 @@ public:
         using pointer = std::string*;
         using reference = std::string&;
 
-        explicit Iterator(const FileMetadata* md, std::optional<size_t> index)
-            : m_md{md}, m_index{index} {};
+        explicit Iterator(const FileMetadata* md, std::optional<size_t> index);
         
-        reference operator*() {
-            if (!m_index.has_value()) {
-                throw std::runtime_error("Invalid iterator");
-            }
-            return m_md->m_checkSums[m_index.value()];
-        }
+        reference operator*();
 
-        pointer operator->() {
-            if (!m_index.has_value()) {
-                throw std::runtime_error("Invalid iterator");
-            }
-            return &(m_md->m_checkSums[m_index.value()]);
-        }
+        pointer operator->();
 
         Iterator operator++() {
             return m_md->advanceIterator(m_index);
         }
 
-        friend bool operator==(const Iterator& it1, const Iterator& it2) {
-            // bool exp = (it1.m_md == it2.m_md) && (it1.m_index == it2.m_index);
-            // return exp;
-            return (it1.m_md == it2.m_md) && (it1.m_index == it2.m_index);
-        }
+        friend bool operator==(const Iterator& it1, const Iterator& it2);
 
-        friend bool operator!=(const Iterator& it1, const Iterator& it2) {
-            return !(it1 == it2);
-        }
+        friend bool operator!=(const Iterator& it1, const Iterator& it2);
     
     private:
         const FileMetadata* m_md;

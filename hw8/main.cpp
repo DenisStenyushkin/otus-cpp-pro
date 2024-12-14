@@ -21,11 +21,12 @@ int main(int argc, char** argv) {
     // }
 
     auto it = md.cbegin();
+    auto it1_end = md.cend();
 
     while (true) {
         std::cout << *it << std::endl;
         it = ++it;
-        if (it == md.cend()) {
+        if (it == it1_end) {
             break;
         }
     }
