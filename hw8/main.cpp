@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
 
     while (true) {
         std::cout << *it << std::endl;
-        it = ++it;
+        ++it;
         if (it == it1_end) {
             break;
         }

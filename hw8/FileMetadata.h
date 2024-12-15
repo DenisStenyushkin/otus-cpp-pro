@@ -28,8 +28,9 @@ public:
 
         pointer operator->();
 
-        Iterator operator++() {
-            return m_md->advanceIterator(m_index);
+        Iterator& operator++() {
+            this->m_index = m_md->advanceIterator(m_index).m_index;
+            return *this;
         }
 
         friend bool operator==(const Iterator& it1, const Iterator& it2);
