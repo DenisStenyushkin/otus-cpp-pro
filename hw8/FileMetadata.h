@@ -58,4 +58,6 @@ private:
     mutable bool m_passedEoF;
 };
 
+bool compare_equal(FileMetadata md1, FileMetadata md2);
+
 } // namespace hw8

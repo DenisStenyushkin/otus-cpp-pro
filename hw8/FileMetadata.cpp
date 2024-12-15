@@ -99,4 +99,34 @@ bool operator!=(const FileMetadata::Iterator& it1, const FileMetadata::Iterator&
     return !(it1 == it2);
 }
 
+bool compare_equal(FileMetadata md1, FileMetadata md2) {
+    if (md1.getSize() != md2.getSize()) {
+        return false;
+    }
+
+    auto md1_it = md1.cbegin(), md1_end = md1.cend();
+    auto md2_it = md2.cbegin(), md2_end = md2.cend();
+
+    while (true)
+    {
+        if (((md1_it == md1_end) && (md2_it != md2_end)) ||
+            ((md1_it != md1_end) && (md2_it == md2_end))) {
+            return false;
+        }
+        else if ((md1_it == md1_end) && (md2_it == md2_end)) {
+            break;
+        }
+
+        // (md1_it != md1_end) && (md2_it != md2_end)
+        if (*md1_it != *md2_it) {
+            return false;
+        }
+
+        ++md1_it;
+        ++md2_it;
+    }
+    
+    return true;
+}
+
 } // namespace hw8
