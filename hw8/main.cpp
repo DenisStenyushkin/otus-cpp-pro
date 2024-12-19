@@ -2,6 +2,7 @@
 #include "Parameters.h"
 #include "Md5ChecksumProvider.h"
 #include "FileMetadata.h"
+#include "files_index.h"
 #include <boost/filesystem.hpp>
 
 namespace fs = boost::filesystem;
@@ -31,6 +32,23 @@ int main(int argc, char** argv) {
     std::cout << "e1 = " << e1 << std::endl;
     std::cout << "e2 = " << e2 << std::endl;
     std::cout << "e3 = " << e3 << std::endl;
+
+
+    auto index = hw8::build_files_index({"./"}, {"./.cmake"}, true, 1, {});
+
+    for (const auto& e: index) {
+        std::cout << e << std::endl;
+    }
+
+
+    // auto r = (fs::absolute(fs::path("./.cmake")) == fs::absolute(fs::path(".cmake")));
+    // std::cout << fs::absolute(fs::path("./.cmake")) << std::endl;
+    // std::cout << fs::absolute(fs::path(".cmake")) << std::endl;
+
+    // std::cout << fs::absolute(fs::relative(fs::path("./.cmake"))) << std::endl;
+    // std::cout << fs::absolute(fs::relative(fs::path(".cmake"))) << std::endl;
+
+    // std::cout << r << std::endl;
 
     return 0;
 }
