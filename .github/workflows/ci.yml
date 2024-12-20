@@ -21,10 +21,17 @@ jobs:
       #   id: install-boost
       #   with:
       #       boost_version: 1.86.0
-      - name: Install General
+      # - name: Install General
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y build-essential libboost-all-dev libboost-filesystem1.86.0 libboost-regex1.86.0 libboost-program-options1.86.0
+      - name: Install Boost
         run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential libboost-all-dev libboost-filesystem1.86.0 libboost-regex1.86.0 libboost-program-options1.86.0
+          wget -O boost_1_86_0.tar.gz https://archives.boost.io/release/1.86.0/source/boost_1_86_0.tar.gz \
+            && tar xzvf boost_1_86_0.tar.gz \
+            && cd boost_1_86_0/ \
+            && ./bootstrap.sh --prefix=/usr/ \
+            && ./b2 install
       - name: Project build
         run: |
           cmake . -DPATCH_VERSION=${{ github.run_number }}
