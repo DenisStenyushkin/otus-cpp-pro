@@ -27,12 +27,11 @@ jobs:
       #     sudo apt-get install -y build-essential libboost-all-dev libboost-filesystem1.86.0 libboost-regex1.86.0 libboost-program-options1.86.0
       - name: Install Boost
         run: |
-          echo ${{ secrets.USERPWD }} | sudo su
           wget -q -O boost_1_86_0.tar.gz https://archives.boost.io/release/1.86.0/source/boost_1_86_0.tar.gz \
             && tar xzf boost_1_86_0.tar.gz \
             && cd boost_1_86_0/ \
             && ./bootstrap.sh --prefix=/usr/ \
-            && ./b2 install
+            && echo ${{ secrets.USERPWD }} | sudo -S ./b2 install
       - name: Project build
         run: |
           cmake . -DPATCH_VERSION=${{ github.run_number }}
