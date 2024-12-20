@@ -34,7 +34,6 @@ void extractParameter(const po::variables_map& vm,
 Parameters::Parameters(int argc, char** argv) {
     po::options_description desc{"Duplicate files finder"};
     desc.add_options()
-        ("help", "Print help message")
         ("include,I", po::value<std::vector<std::string>>(), "Include dirs")
         ("exclude,E", po::value<std::vector<std::string>>(), "Exclude dirs")
         ("mask,M", po::value<std::vector<std::string>>(), "File name mask")
