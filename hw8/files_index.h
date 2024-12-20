@@ -2,7 +2,6 @@
 
 #include <vector>
 #include <boost/filesystem.hpp>
-#include "Parameters.h"
 
 namespace hw8 {
 

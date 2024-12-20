@@ -7,8 +7,8 @@ namespace hw8 {
 
 namespace fs = boost::filesystem;
 
-FileMetadata::FileMetadata(fs::path& path, size_t fileBlockSize,
-                           IChecksumProvider& checksumProvider)
+FileMetadata::FileMetadata(const fs::path& path, size_t fileBlockSize,
+                           const IChecksumProvider& checksumProvider)
     : m_path{path}, m_fileBlockSize{fileBlockSize}, m_checksumProvider{checksumProvider},
       m_passedEoF{false} {
     m_size = fs::file_size(m_path);
@@ -17,6 +17,10 @@ FileMetadata::FileMetadata(fs::path& path, size_t fileBlockSize,
 
 size_t FileMetadata::getSize() const {
     return m_size;
+}
+
+const fs::path& FileMetadata::getPath() const {
+    return m_path;
 }
 
 const FileMetadata::Iterator FileMetadata::cbegin() const {

@@ -1,43 +1,55 @@
+#include <algorithm>
 #include <iostream>
+#include <stdexcept>
 #include "Parameters.h"
+#include "CrcChecksumProvider.h"
 #include "Md5ChecksumProvider.h"
 #include "FileMetadata.h"
 #include "files_index.h"
+#include "files_compare.h"
 #include <boost/filesystem.hpp>
 
 namespace fs = boost::filesystem;
 
 int main(int argc, char** argv) {
     hw8::Parameters params{argc, argv};
-    // std::cout << params << std::endl;
 
-    hw8::Md5ChecksumProvider csp;
+    IChecksumProvider* csp{nullptr};
+    if (params.GetHashAlgorithm() == hw8::HashAlgo::CRC32) {
+        csp = new hw8::CrcChecksumProvider{};
+    }
+    else if (params.GetHashAlgorithm() == hw8::HashAlgo::MD5) {
+        csp = new hw8::Md5ChecksumProvider{};
+    }
+    else {
+        throw std::invalid_argument("Unknown hash algorithm");
+    }
 
-    fs::path p1{"txt1.txt"};
-    hw8::FileMetadata md1{p1, 3, csp};
+    auto file_path_list = hw8::build_files_index(params.GetIncludeDirs(),
+                                                 params.GetExcludeDirs(),
+                                                 params.GetScanRecursive(),
+                                                 params.GetMinFileSize(),
+                                                 params.GetFileNameMasks());
 
-    fs::path p2{"txt2.txt"};
-    hw8::FileMetadata md2{p2, 3, csp};
+    std::vector<hw8::FileMetadata> metadata_list;
+    std::transform(file_path_list.begin(), file_path_list.end(), std::back_inserter(metadata_list),
+                   [csp, params](const auto& path) {
+                        return hw8::FileMetadata{path, params.GetBufferSize(), *csp};
+                    }
+    );
 
-    fs::path p3{"txt3.txt"};
-    hw8::FileMetadata md3{p3, 3, csp};
-    
-    fs::path p4{"txt4.txt"};
-    hw8::FileMetadata md4{p4, 3, csp};
+    const auto equality_bins = hw8::compare_files(metadata_list);
 
-    auto e1 = hw8::compare_equal(md1, md2);
-    auto e2 = hw8::compare_equal(md1, md3);
-    auto e3 = hw8::compare_equal(md1, md4);
-
-    std::cout << "e1 = " << e1 << std::endl;
-    std::cout << "e2 = " << e2 << std::endl;
-    std::cout << "e3 = " << e3 << std::endl;
-
-
-    auto index = hw8::build_files_index({"./"}, {"./.cmake"}, true, 1, {});
-
-    for (const auto& e: index) {
-        std::cout << e << std::endl;
+    for (const auto& b: equality_bins) {
+        if (b.equals.empty()) {
+            continue;
+        }
+        
+        std::cout << b.seed->getPath().string() << std::endl;
+        for (const auto e: b.equals) {
+            std::cout << e->getPath().string() << std::endl;
+        }
+        std::cout << std::endl;
     }
 
 

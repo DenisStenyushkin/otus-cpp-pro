@@ -21,7 +21,9 @@ add_executable(bayan main.cpp
                      Md5ChecksumProvider.h
                      Md5ChecksumProvider.cpp
                      files_index.h
-                     files_index.cpp)
+                     files_index.cpp
+                     files_compare.h
+                     files_compare.cpp)
 
 set_target_properties(bayan PROPERTIES
     CXX_STANDARD 17

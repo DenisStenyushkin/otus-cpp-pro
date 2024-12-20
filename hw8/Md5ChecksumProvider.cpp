@@ -5,7 +5,7 @@
 
 namespace hw8 {
 
-std::string Md5ChecksumProvider::CaculateChecksum(const char * data, size_t size) {
+std::string Md5ChecksumProvider::CaculateChecksum(const char * data, size_t size) const {
     boost::uuids::detail::md5 hash;
     boost::uuids::detail::md5::digest_type digest;
     std::string checksum;

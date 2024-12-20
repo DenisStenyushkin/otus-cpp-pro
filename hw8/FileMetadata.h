@@ -42,18 +42,19 @@ public:
         std::optional<size_t> m_index;
     };
 
-    explicit FileMetadata(fs::path& path, size_t fileBlockSize, IChecksumProvider& checksumProvider);
+    explicit FileMetadata(const fs::path& path, size_t fileBlockSize, const IChecksumProvider& checksumProvider);
     size_t getSize() const;
+    const fs::path& getPath() const;
     const Iterator cbegin() const;
     const Iterator cend() const;
 private:
     Iterator advanceIterator(std::optional<size_t> currentIndex) const;
     void readNextBlock() const;
 
-    fs::path& m_path;
+    const fs::path& m_path;
     size_t m_size;
     size_t m_fileBlockSize;
-    IChecksumProvider& m_checksumProvider;
+    const IChecksumProvider& m_checksumProvider;
     mutable std::vector<std::string> m_checkSums;
     mutable bool m_passedEoF;
 };
