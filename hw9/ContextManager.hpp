@@ -42,8 +42,7 @@ public:
     }
 
     void remove_context(ContextID ctx_id) {
-        for (auto it = m_context_map.begin(), last = m_context_map.end(); it != last;)
-        {
+        for (auto it = m_context_map.begin(), last = m_context_map.end(); it != last;) {
             if (it->first == ctx_id) {
                 it = m_context_map.erase(it);
             }
@@ -51,6 +50,10 @@ public:
                 ++it;
             }
         }
+    }
+
+    void handle_command(ContextID ctx_id, const std::string& command) {
+        m_context_map.at(ctx_id)->HandleCommand(command);
     }
 private:
     std::unordered_map<ContextID, std::shared_ptr<CommandProcessing::CommandProcessor>> m_context_map;

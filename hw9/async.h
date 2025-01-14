@@ -14,7 +14,7 @@ ContextID connect(size_t batch_capacity);
 /// @brief Passes a new command to the processing context
 /// @param ctx_id The context's ID
 /// @param command Command to pass
-void receive(ContextID ctx_id, const std::string&& command);
+void receive(ContextID ctx_id, const std::string& command);
 
 /// @brief Disconnects from the processing context
 /// @param ctx_id The context's ID
