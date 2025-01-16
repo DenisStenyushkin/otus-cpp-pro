@@ -41,7 +41,7 @@ int main(int argc, char** argv) {
     sender1.join();
     sender2.join();
 
-    std::this_thread::sleep_for(2s);
+    std::this_thread::sleep_for(5s);
 
     hw9::close_async();
 }

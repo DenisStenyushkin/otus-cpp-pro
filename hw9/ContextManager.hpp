@@ -1,9 +1,11 @@
 #pragma once
 
+#include <iomanip>
 #include <iostream>
 #include <fstream>
 #include <functional>
 #include <memory>
+#include <sstream>
 #include <thread>
 #include <vector>
 
@@ -99,11 +101,49 @@ private:
         
     }
 
-    void file_worker() {}
+    void file_worker() {
+        CommandMetadataVector output;
+
+        while (m_file_data_queue.pop(output)) {
+            if (!output.size()) {
+                continue;
+            }
+
+            auto tc = std::chrono::system_clock::to_time_t(output[0].created_at);
+            auto tm = *std::localtime(&tc);
+            auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(output[0].created_at.time_since_epoch()) % 1000;
+
+            std::stringstream fname_stream;
+            fname_stream << "bulk" << std::put_time(&tm, "%H%M%S") << ms.count() << "(" + get_random_string(5) + ")" << ".log";
+            std::ofstream out_file{fname_stream.str()};
+
+            out_file << "bulk: ";
+            for (size_t i = 0; i < output.size(); ++i) {
+                out_file << output[i].command;
+                if (i < (output.size() - 1)) {
+                    out_file << ", ";
+                }
+            }
+            out_file << std::endl;
+
+            out_file.close();
+        }
+    }
 
     void output_callback(CommandMetadataVector& commands) {
+        CommandMetadataVector commands_copy = commands;
+
         m_console_data_queue.push(commands);
-        m_file_data_queue.push(commands);
+        m_file_data_queue.push(commands_copy);
+    }
+
+    std::string get_random_string(size_t size) {
+        std::string bucket = "abcdefghijklmnopqrstuvwxyz";
+        std::string uuid;
+        for (size_t i = 0; i < size; ++i) {
+            uuid += bucket[rand() % bucket.size()];
+        }
+        return uuid;
     }
 };
 
