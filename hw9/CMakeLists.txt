@@ -3,11 +3,11 @@ cmake_minimum_required(VERSION 3.2)
 set(PATCH_VERSION "1" CACHE INTERNAL "Patch version")
 set(PROJECT_VESRION 0.0.${PATCH_VERSION})
 
-project(libasync VERSION ${PROJECT_VESRION})
+project(async VERSION ${PROJECT_VESRION})
 
 configure_file(version.h.in version.h)
 
-add_library(libasync
+add_library(async SHARED
     async.h
     async.cpp
     BatchInputCommandProcessorState.h
@@ -25,7 +25,7 @@ add_library(libasync
     WaitingQueue.hpp)
 add_executable(bulk main.cpp)
 
-set_target_properties(libasync bulk PROPERTIES
+set_target_properties(async bulk PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
 )
@@ -33,18 +33,18 @@ target_include_directories(bulk
     PRIVATE "${CMAKE_BINARY_DIR}"
 )
 target_link_libraries(bulk PRIVATE
-    libasync
+    async
 )
 
 if (MSVC)
-    target_compile_options(libasync PRIVATE
+    target_compile_options(async PRIVATE
         /W4
     )
-    target_compile_options(bukl PRIVATE
+    target_compile_options(bulk PRIVATE
         /W4
     )
 else ()
-    target_compile_options(libasync PRIVATE
+    target_compile_options(async PRIVATE
         -Wall -Wextra -pedantic -Werror
     )
     target_compile_options(bulk PRIVATE
@@ -54,7 +54,7 @@ endif()
 
 
 
-install(TARGETS libasync RUNTIME DESTINATION bin)
+install(TARGETS async RUNTIME DESTINATION bin)
 install(TARGETS bulk RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
