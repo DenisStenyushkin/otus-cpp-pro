@@ -21,7 +21,8 @@ add_library(libasync
     CommandProcessorStateFabric.cpp
     ContextManager.hpp
     ScopedInputCommandProcessorState.h
-    ScopedInputCommandProcessorState.cpp)
+    ScopedInputCommandProcessorState.cpp
+    WaitingQueue.hpp)
 add_executable(bulk main.cpp)
 
 set_target_properties(libasync bulk PROPERTIES

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+#include <fstream>
 #include <functional>
 #include <memory>
 #include <thread>
@@ -8,6 +10,7 @@
 #include "async.h"
 #include "CommandMetadata.h"
 #include "CommandProcessor.h"
+#include "WaitingQueue.hpp"
 
 namespace hw9 {
 
@@ -26,7 +29,7 @@ public:
     }
 
     ContextID create_new_context(size_t batch_capacity) {
-        ContextID new_ctx_id = m_context_map.size();
+        ContextID new_ctx_id = m_context_map.size() + 1; // ctx_id start from 1
 
         auto processor = std::make_shared<CommandProcessing::CommandProcessor>(
             std::bind(&ContextManager::output_callback, this, std::placeholders::_1)
@@ -56,15 +59,40 @@ public:
         m_context_map.at(ctx_id)->HandleCommand(command);
     }
 private:
+    using CommandMetadataVector = std::vector<CommandProcessing::CommandMetadata>;
+
     std::unordered_map<ContextID, std::shared_ptr<CommandProcessing::CommandProcessor>> m_context_map;
     std::thread m_console_thread;
     WorkerThreadPool m_file_threads;
+    WaitingQueue<CommandMetadataVector> m_console_data_queue;
+    WaitingQueue<CommandMetadataVector> m_file_data_queue;
 
-    void console_worker() {}
+    void console_worker() {
+        CommandMetadataVector output;
+
+        while (m_console_data_queue.pop(output)) {
+            if (!output.size()) {
+                continue;
+            }
+
+            std::cout << "bulk: ";
+            for (size_t i = 0; i < output.size(); ++i) {
+                std::cout << output[i].command;
+                if (i < (output.size() - 1)) {
+                    std::cout << ", ";
+                }
+            }
+            std::cout << std::endl;
+        }
+        
+    }
 
     void file_worker() {}
 
-    void output_callback(std::vector<CommandProcessing::CommandMetadata>&) {}
+    void output_callback(CommandMetadataVector& commands) {
+        m_console_data_queue.push(commands);
+        m_file_data_queue.push(commands);
+    }
 };
 
 } // namespace hw9
