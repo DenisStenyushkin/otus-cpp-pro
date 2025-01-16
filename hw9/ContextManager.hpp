@@ -28,6 +28,13 @@ public:
         };
     }
 
+    ~ContextManager() {
+        m_console_thread.join();
+        for (auto& t: m_file_threads) {
+            t.join();
+        }
+    }
+
     ContextID create_new_context(size_t batch_capacity) {
         ContextID new_ctx_id = m_context_map.size() + 1; // ctx_id start from 1
 
@@ -57,6 +64,11 @@ public:
 
     void handle_command(ContextID ctx_id, const std::string& command) {
         m_context_map.at(ctx_id)->HandleCommand(command);
+    }
+
+    void stop() {
+        m_console_data_queue.stop();
+        m_file_data_queue.stop();
     }
 private:
     using CommandMetadataVector = std::vector<CommandProcessing::CommandMetadata>;

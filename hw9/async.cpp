@@ -17,4 +17,8 @@ void disconnect(ContextID ctx_id) {
     context_manager.remove_context(ctx_id);
 }
 
+void close_async() {
+    context_manager.stop();
+}
+
 } // namespace hw9

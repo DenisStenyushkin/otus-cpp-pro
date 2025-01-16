@@ -20,4 +20,7 @@ void receive(ContextID ctx_id, const std::string& command);
 /// @param ctx_id The context's ID
 void disconnect(ContextID ctx_id);
 
+/// @brief Correctly closes async context
+void close_async();
+
 } // namespace hw9
