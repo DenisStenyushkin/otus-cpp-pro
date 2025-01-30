@@ -7,7 +7,10 @@ project(join_server VERSION ${PROJECT_VESRION})
 
 find_package(Boost 1.86.0 COMPONENTS system REQUIRED )
 find_package(Threads)
+find_package(SQLite3)
+
 INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
+INCLUDE_DIRECTORIES( ${SQLITE3_INCLUDE_DIRS})
 
 configure_file(version.h.in version.h)
 
@@ -24,7 +27,8 @@ target_include_directories(join_client
 )
 
 add_executable(join_server join_server.cpp
-                           message.hpp)
+                           message.hpp
+                           database.hpp)
 
 set_target_properties(join_server PROPERTIES
     CXX_STANDARD 17
@@ -36,7 +40,8 @@ target_include_directories(join_server
 )
 
 target_link_libraries(join_server ${Boost_LIBRARIES}
-                                  ${CMAKE_THREAD_LIBS_INIT})
+                                  ${CMAKE_THREAD_LIBS_INIT}
+                                  SQLite::SQLite3)
 
 if (MSVC)
     target_compile_options(join_client PRIVATE
