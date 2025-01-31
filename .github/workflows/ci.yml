@@ -25,7 +25,8 @@ jobs:
             && echo ${{ secrets.USERPWD }} | sudo -S ./b2 install
       - name: Install SQLite
         run: |
-          apt-get update && apt-get install sqlite3 libsqlite3-dev
+          echo ${{ secrets.USERPWD }} | sudo -S apt-get update \
+          && echo ${{ secrets.USERPWD }} | sudo -S  apt-get install sqlite3 libsqlite3-dev
       - name: Project build
         run: |
           cmake . -DPATCH_VERSION=${{ github.run_number }}
