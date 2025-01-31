@@ -6,22 +6,9 @@
 
 #include "boost/asio.hpp"
 
-#include "database.hpp"
+#include "command_handler.hpp"
 #include "message.hpp"
 
-
-std::vector<std::string> split(const std::string& s, const char delimiter) {
-    std::stringstream sstream{s};
-    std::string segment;
-    std::vector<std::string> seglist;
-
-    while(std::getline(sstream, segment, delimiter))
-    {
-        seglist.push_back(segment);
-    }
-
-    return seglist;
-}
 
 class Session : public std::enable_shared_from_this<Session> {
 public:
@@ -51,65 +38,18 @@ private:
                                 [this, self](boost::system::error_code ec, size_t) {
                                     if (!ec) {
                                         std::cout << "Received: " << read_msg_.body() << std::endl;
-
-                                        try {
-                                            std::vector<std::string> tokens = split(read_msg_.body(), ' ');
-                                            if (tokens.empty()) {
-                                                return;
-                                            }
-
-                                            // TODO: Error handling!!!
-                                            if (tokens[0] == "INSERT") {
-                                                db_.insert(tokens[1], std::stoi(tokens[2]), tokens[3]);
-                                                send_response("OK");
-                                            }
-                                            else if (tokens[0] == "TRUNCATE") {
-                                                db_.truncate(tokens[1]);
-                                                send_response("OK");
-                                            }
-                                            else if (tokens[0] == "INTERSECTION") {
-                                                auto result = db_.intersection();
-                                                
-                                                std::stringstream response;
-                                                for (auto& [id, name1, name2]: result) {
-                                                    response << id << "," << name1 << "," << name2 << std::endl;
-                                                }
-                                                response << "OK";
-
-                                                send_response(response.str().c_str());
-                                            }
-                                            else if (tokens[0] == "SYMMETRIC_DIFFERENCE") {
-                                                auto result = db_.symmetric_difference();
-                                                
-                                                std::stringstream response;
-                                                for (auto& [id, name1, name2]: result) {
-                                                    response << id << "," << name1 << "," << name2 << std::endl;
-                                                }
-                                                response << "OK";
-
-                                                send_response(response.str().c_str());
-                                            }
-                                            else {
-                                                std::stringstream response;
-                                                response << "Unknown operation: " << tokens[0];
-                                                send_response(response.str().c_str());
-                                            }
-                                        } 
-                                        catch (const std::exception& ex) {
-                                            std::stringstream response;
-                                            response << "Unexpected error: " << ex.what();
-                                            send_response(response.str().c_str());
-                                        }
+                                        std::string response = cmd_.handle(read_msg_.body());
+                                        send_response(response.c_str());
 
                                         do_read_header();
                                     }
                                 });
     }
 
-    void send_response(const char* line) {
+    void send_response(const char* body) {
         Message msg;
-        msg.body_length(std::strlen(line));
-        std::memcpy(msg.body(), line, msg.body_length());
+        msg.body_length(std::strlen(body));
+        std::memcpy(msg.body(), body, msg.body_length());
         msg.encode_header();
         do_write(msg);
     }
@@ -128,7 +68,7 @@ private:
     boost::asio::ip::tcp::socket socket_;
     char data_[Message::header_length + Message::max_body_length];
     Message read_msg_;
-    Database db_;
+    CommandHandler cmd_;
 };
 
 class Server {

@@ -30,12 +30,12 @@ public:
         
         rc = sqlite3_exec(db_, tableA_sql, nullptr, 0, &zErrMsg);
         if (rc) {
-            throw std::runtime_error("Unable to create table A");
+            throw std::runtime_error("Unable to create table A: " + std::string(zErrMsg));
         }
 
         rc = sqlite3_exec(db_, tableB_sql, nullptr, 0, &zErrMsg);
         if (rc) {
-            throw std::runtime_error("Unable to create table B");
+            throw std::runtime_error("Unable to create table B: " + std::string(zErrMsg));
         }
     }
 
@@ -50,7 +50,7 @@ public:
 
         rc = sqlite3_exec(db_, sql.str().c_str(), nullptr, 0, &zErrMsg);
         if (rc) {
-            throw std::runtime_error("Unable to execute " + sql.str());
+            throw std::runtime_error("Unable to insert: " + std::string(zErrMsg));
         }
     }
 
@@ -64,14 +64,14 @@ public:
 
         rc = sqlite3_exec(db_, sql.str().c_str(), nullptr, 0, &zErrMsg);
         if (rc) {
-            throw std::runtime_error("Unable to execute " + sql.str());
+            throw std::runtime_error("Unable to truncate: " + std::string(zErrMsg));
         }
     }
 
     JoinRow intersection() {
-        return exec_join_sql("SELECT A.id, A.name, B.name " \
-                             "FROM A INNER JOIN B " \
-                             "ON A.id = B.id " \
+        return exec_join_sql("SELECT A.id, A.name, B.name "
+                             "FROM A INNER JOIN B "
+                             "ON A.id = B.id "
                              "ORDER BY A.ID ASC;");
     }
 

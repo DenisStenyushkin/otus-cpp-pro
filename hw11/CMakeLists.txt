@@ -28,6 +28,7 @@ target_include_directories(join_client
 
 add_executable(join_server join_server.cpp
                            message.hpp
+                           command_handler.hpp
                            database.hpp)
 
 set_target_properties(join_server PROPERTIES
