@@ -13,29 +13,24 @@ BatchInputCommandProcessorState::BatchInputCommandProcessorState(const std::shar
 }
 
 void BatchInputCommandProcessorState::EnterState() {
-    m_processor->ProcessCommands();
+    m_processor.lock()->ProcessCommands();
 }
 
 void BatchInputCommandProcessorState::HandleCommand(const std::string& command) {
     if (command == START_SCOPE_COMMAND) {
-        m_processor->SwitchTo(m_state_fabric->MakeScoped());
+        m_processor.lock()->SwitchTo(m_state_fabric.lock()->MakeScoped());
         return;
     }
 
     m_commands->commands.push_back(CommandMetadata{command});
     if (m_commands->commands.size() == m_commands->commands.capacity()) {
-        m_processor->ProcessCommands();
+        m_processor.lock()->ProcessCommands();
         m_commands->commands.clear();
     }
 }
 
 void BatchInputCommandProcessorState::ExitState() {
-    m_processor->ProcessCommands();
-    m_commands->commands.clear();
-}
-
-BatchInputCommandProcessorState::~BatchInputCommandProcessorState() {
-    m_processor->ProcessCommands();
+    m_processor.lock()->ProcessCommands();
     m_commands->commands.clear();
 }
 

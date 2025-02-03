@@ -10,7 +10,7 @@ ScopedInputCommandProcessorState::ScopedInputCommandProcessorState(const std::sh
         : CommandProcessorState{processor, state_fabric, storage}, m_num_nested_scopes{0} {}
 
 void ScopedInputCommandProcessorState::EnterState() {
-    m_processor->ProcessCommands();
+    m_processor.lock()->ProcessCommands();
 }
 
 void ScopedInputCommandProcessorState::HandleCommand(const std::string& command) {
@@ -20,7 +20,7 @@ void ScopedInputCommandProcessorState::HandleCommand(const std::string& command)
     else if (command == END_SCOPE_COMMAND) {
         --m_num_nested_scopes;
         if (m_num_nested_scopes < 0) {
-            m_processor->SwitchTo(m_state_fabric->MakeBatch());
+            m_processor.lock()->SwitchTo(m_state_fabric.lock()->MakeBatch());
         }
     } else {
         m_commands->commands.push_back(CommandMetadata{command});
@@ -28,7 +28,7 @@ void ScopedInputCommandProcessorState::HandleCommand(const std::string& command)
 }
 
 void ScopedInputCommandProcessorState::ExitState() {
-    m_processor->ProcessCommands();
+    m_processor.lock()->ProcessCommands();
 }
 
 } // namespace CommandProcessing

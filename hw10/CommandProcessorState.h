@@ -59,8 +59,8 @@ public:
     virtual std::vector<CommandMetadata> GetCommands();
 
 protected:
-    std::shared_ptr<CommandProcessor> m_processor; ///< Процессор команд
-    std::shared_ptr<CommandProcessorStateFabric> m_state_fabric; ///< Фабрика новых состояний
+    std::weak_ptr<CommandProcessor> m_processor; ///< Процессор команд
+    std::weak_ptr<CommandProcessorStateFabric> m_state_fabric; ///< Фабрика новых состояний
     std::shared_ptr<CommandsStorage> m_commands; ///< Команды текущего пакета
 };
 

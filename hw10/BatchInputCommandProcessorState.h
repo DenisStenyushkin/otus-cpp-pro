@@ -46,11 +46,6 @@ public:
      * Операция, выполняемая при выходе из состояния
      */
     void ExitState() override;
-
-    /**
-     * Деструктор
-     */
-    ~BatchInputCommandProcessorState();
 };
 
 } // namespace CommandProcessing

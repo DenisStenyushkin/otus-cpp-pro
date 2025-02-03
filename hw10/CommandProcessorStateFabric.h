@@ -42,10 +42,6 @@ public:
      */
     std::shared_ptr<CommandProcessorState> MakeScoped();
 
-    ~CommandProcessorStateFabric() {
-        std::cout << "StateFabric dtor\n";
-    }
-
 private:
     std::shared_ptr<CommandProcessor> m_processor;
     std::size_t m_batch_capacity;

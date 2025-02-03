@@ -51,8 +51,6 @@ public:
      */
     void SwitchTo(std::shared_ptr<CommandProcessorState> newState);
 
-    ~CommandProcessor();
-
 private:
     std::shared_ptr<CommandProcessorState> m_state;
     std::vector<std::shared_ptr<OutputHandling::OutputHandler>> m_output_handlers;

@@ -34,6 +34,10 @@ public:
         do_read();
     }
 
+    ~Session() {
+        processor_->SwitchTo(state_fabric_->MakeBatch());
+    }
+
 private:
     std::vector<std::string> split(const std::string& s, const char delimiter) {
         std::stringstream sstream{s};
@@ -50,6 +54,7 @@ private:
 
     void do_read() {
         auto self{shared_from_this()};
+        std::memset(data_, 0, buffer_size);
         socket_.async_read_some(boost::asio::buffer(data_, buffer_size),
                                 [this, self](boost::system::error_code ec, size_t length) {
                                     if (!ec) {

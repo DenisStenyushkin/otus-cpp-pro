@@ -23,8 +23,4 @@ void CommandProcessor::SwitchTo(std::shared_ptr<CommandProcessorState> newState)
     m_state->EnterState();
 }
 
-CommandProcessor::~CommandProcessor() {
-std::cout << "CommandProcessor dtor\n";
-}
-
 } // namespace CommandProcessing
