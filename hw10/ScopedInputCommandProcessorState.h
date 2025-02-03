@@ -23,9 +23,11 @@ public:
      * 
      * @param processor Указатель на процессор команд, к которому относится состояние
      * @param state_fabric Указатель на фабрику, создающую новые состояния
+     * @param storage Внешнее хранилище комманд
      */
     explicit ScopedInputCommandProcessorState(const std::shared_ptr<CommandProcessor> processor,
-                                              const std::shared_ptr<CommandProcessorStateFabric> state_fabric);
+                                              const std::shared_ptr<CommandProcessorStateFabric> state_fabric,
+                                              const std::shared_ptr<CommandsStorage> storage);
 
     /**
      * Операция, выполняемая при входе в состояние

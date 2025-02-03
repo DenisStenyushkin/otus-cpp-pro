@@ -23,10 +23,12 @@ public:
      * @param processor Указатель на процессор команд, к которому относится состояние
      * @param state_fabric Указатель на фабрику, создающую новые состояния
      * @param capacity Размер обрабатываемого пакета команд
+     * @param storage Внешнее хранилище комманд
      */
     explicit BatchInputCommandProcessorState(const std::shared_ptr<CommandProcessor> processor,
                                              const std::shared_ptr<CommandProcessorStateFabric> state_fabric,
-                                             std::size_t capacity);
+                                             std::size_t capacity,
+                                             std::shared_ptr<CommandsStorage> storage);
 
     /**
      * Операция, выполняемая при входе в состояние
@@ -44,6 +46,11 @@ public:
      * Операция, выполняемая при выходе из состояния
      */
     void ExitState() override;
+
+    /**
+     * Деструктор
+     */
+    ~BatchInputCommandProcessorState();
 };
 
 } // namespace CommandProcessing

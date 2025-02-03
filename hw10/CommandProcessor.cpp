@@ -1,5 +1,5 @@
 #include "CommandProcessor.h"
-
+#include <iostream>
 namespace CommandProcessing {
 
 CommandProcessor::CommandProcessor(std::initializer_list<std::shared_ptr<OutputHandling::OutputHandler>> output_handlers)
@@ -21,6 +21,10 @@ void CommandProcessor::SwitchTo(std::shared_ptr<CommandProcessorState> newState)
     }
     m_state = newState;
     m_state->EnterState();
+}
+
+CommandProcessor::~CommandProcessor() {
+std::cout << "CommandProcessor dtor\n";
 }
 
 } // namespace CommandProcessing

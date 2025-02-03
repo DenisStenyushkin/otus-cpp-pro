@@ -6,6 +6,7 @@
 #include "CommandMetadata.h"
 #include "CommandProcessor.h"
 #include "CommandProcessorStateFabric.h"
+#include "CommandsStorage.hpp"
 
 namespace CommandProcessing {
 
@@ -22,9 +23,11 @@ public:
      * 
      * @param processor Процессор команд, к которому относится состояние
      * @param state_fabric Экземпляр фабрики для создания новых состояний
+     * @param storage Внешнее хранилище комманд
      */
     explicit CommandProcessorState(std::shared_ptr<CommandProcessor> processor,
-                                   std::shared_ptr<CommandProcessorStateFabric> state_fabric);
+                                   std::shared_ptr<CommandProcessorStateFabric> state_fabric,
+                                   std::shared_ptr<CommandsStorage> storage);
 
     /**
      * Деструктор
@@ -58,7 +61,7 @@ public:
 protected:
     std::shared_ptr<CommandProcessor> m_processor; ///< Процессор команд
     std::shared_ptr<CommandProcessorStateFabric> m_state_fabric; ///< Фабрика новых состояний
-    std::vector<CommandMetadata> m_commands; ///< Команды текущего пакета
+    std::shared_ptr<CommandsStorage> m_commands; ///< Команды текущего пакета
 };
 
 } // namespace CommandProcessing
