@@ -66,6 +66,8 @@ private:
                                             processor_->HandleCommand(command);
                                         }
                                     }
+
+                                    do_read();
                                 });
     }
 
