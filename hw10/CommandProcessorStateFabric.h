@@ -41,7 +41,6 @@ public:
 private:
     std::shared_ptr<CommandProcessor> m_processor;
     std::size_t m_batch_capacity;
-    std::shared_ptr<CommandProcessorState> m_shared_batch_state;
 };
 
 } // namespace CommandProcessing
