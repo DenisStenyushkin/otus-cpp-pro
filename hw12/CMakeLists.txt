@@ -9,7 +9,10 @@ configure_file(version.h.in version.h)
 
 add_executable(mapreduce main.cpp
                         text_file_splitter.hpp
-                        data_provider.hpp)
+                        data_provider.hpp
+                        map_func.hpp
+                        mapper.hpp
+                        list_merging.hpp)
 
 set_target_properties(mapreduce PROPERTIES
     CXX_STANDARD 17

@@ -4,6 +4,7 @@
 #include <string>
 
 #include "data_provider.hpp"
+#include "list_merging.hpp"
 #include "mapper.hpp"
 #include "map_func.hpp"
 #include "text_file_splitter.hpp"
@@ -35,4 +36,8 @@ int main(int argc, char* argv[]) {
     Mapper mapper{n_mappers, data_provider_pointers, std::bind(extract_prefix, _1, 3)};
 
     auto map_result = mapper.run();
+    for (auto& res: map_result) {
+        res.sort();
+    }
+    auto merge_result = merge(map_result);
 }
