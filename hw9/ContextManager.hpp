@@ -38,6 +38,8 @@ public:
     }
 
     ContextID create_new_context(size_t batch_capacity) {
+        std::lock_guard<std::mutex> lock{m_context_mutex};
+
         ContextID new_ctx_id = m_context_map.size() + 1; // ctx_id start from 1
 
         auto processor = std::make_shared<CommandProcessing::CommandProcessor>(
@@ -54,6 +56,8 @@ public:
     }
 
     void remove_context(ContextID ctx_id) {
+        std::lock_guard<std::mutex> lock{m_context_mutex};
+
         for (auto it = m_context_map.begin(), last = m_context_map.end(); it != last;) {
             if (it->first == ctx_id) {
                 it = m_context_map.erase(it);
@@ -65,6 +69,7 @@ public:
     }
 
     void handle_command(ContextID ctx_id, const std::string& command) {
+        std::lock_guard<std::mutex> lock{m_context_mutex};
         m_context_map.at(ctx_id)->HandleCommand(command);
     }
 
@@ -75,6 +80,7 @@ public:
 private:
     using CommandMetadataVector = std::vector<CommandProcessing::CommandMetadata>;
 
+    std::mutex m_context_mutex;
     std::unordered_map<ContextID, std::shared_ptr<CommandProcessing::CommandProcessor>> m_context_map;
     std::thread m_console_thread;
     WorkerThreadPool m_file_threads;

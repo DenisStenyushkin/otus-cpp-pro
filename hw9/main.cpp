@@ -12,6 +12,8 @@ int main(int argc, char** argv) {
     if (argc != 2) {
         std::cout << "The program accepts exactly one integral argument" << std::endl;
         std::cout << "Example: ./bulk 3" << std::endl;
+        hw9::close_async();
+
         return -1;
     }
 
