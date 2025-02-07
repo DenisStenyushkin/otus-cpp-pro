@@ -23,31 +23,45 @@ add_library(async SHARED
     ScopedInputCommandProcessorState.h
     ScopedInputCommandProcessorState.cpp
     WaitingQueue.hpp)
-add_executable(bulk main.cpp)
+add_executable(bulk_async_demo demo.cpp)
+add_executable(bulk_async_client client.cpp)
 
-set_target_properties(async bulk PROPERTIES
+set_target_properties(async bulk_async_demo bulk_async_client PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
 )
-target_include_directories(bulk
+target_include_directories(bulk_async_demo
     PRIVATE "${CMAKE_BINARY_DIR}"
 )
-target_link_libraries(bulk PRIVATE
-    async
+target_link_libraries(bulk_async_demo 
+    PRIVATE async
+)
+
+target_include_directories(bulk_async_client
+    PRIVATE "${CMAKE_BINARY_DIR}"
+)
+target_link_libraries(bulk_async_client 
+    PRIVATE async
 )
 
 if (MSVC)
     target_compile_options(async PRIVATE
         /W4
     )
-    target_compile_options(bulk PRIVATE
+    target_compile_options(bulk_async_demo PRIVATE
+        /W4
+    )
+    target_compile_options(bulk_async_client PRIVATE
         /W4
     )
 else ()
     target_compile_options(async PRIVATE
         -Wall -Wextra -pedantic -Werror
     )
-    target_compile_options(bulk PRIVATE
+    target_compile_options(bulk_async_demo PRIVATE
+        -Wall -Wextra -pedantic -Werror
+    )
+    target_compile_options(bulk_async_client PRIVATE
         -Wall -Wextra -pedantic -Werror
     )
 endif()
@@ -55,7 +69,8 @@ endif()
 
 
 install(TARGETS async RUNTIME DESTINATION bin)
-install(TARGETS bulk RUNTIME DESTINATION bin)
+install(TARGETS bulk_async_demo RUNTIME DESTINATION bin)
+install(TARGETS bulk_async_client RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
 
