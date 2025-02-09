@@ -3,7 +3,6 @@
 #include <memory>
 #include <vector>
 
-#include "ContextManager.hpp"
 #include "CommandMetadata.h"
 #include "CommandProcessor.h"
 #include "CommandProcessorStateFabric.h"
