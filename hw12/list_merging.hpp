@@ -13,9 +13,12 @@ std::forward_list<std::string> merge(std::vector<std::forward_list<std::string>>
         return lists[0];
     }
 
-    for (size_t i = 1; i < lists.size(); ++i) {
-        lists[0].merge(lists[i]);
+    std::forward_list<std::string> result;
+    for (auto& list: lists) {
+        for (auto& element: list) {
+            result.push_front(element);
+        }
     }
 
-    return lists[0];
+    return result;
 }
