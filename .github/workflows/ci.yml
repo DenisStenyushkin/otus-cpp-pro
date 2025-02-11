@@ -19,7 +19,7 @@ jobs:
       - name: Install TF
         run: |
           curl -s https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-2.5.0.tar.gz -o libtensorflow-cpu-linux-x86_64-2.5.0.tar.gz \
-            && tar -C /usr/local -xzf libtensorflow-cpu-linux-x86_64-2.5.0.tar.gz \
+            && echo ${{ secrets.USERPWD }} | sudo -S tar -C /usr/local -xzf libtensorflow-cpu-linux-x86_64-2.5.0.tar.gz \
             && ldconfig
       - name: Install Eigen
         run: |
