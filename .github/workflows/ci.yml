@@ -3,7 +3,7 @@ name: 'C++ CI'
 on: [push]
 
 env:
-  WORK_DIR: ./hw11
+  WORK_DIR: ./hw13
 
 jobs:
   build:
@@ -16,17 +16,15 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: true
-      - name: Install Boost
+      - name: Install TF
         run: |
-          wget -q -O boost_1_86_0.tar.gz https://archives.boost.io/release/1.86.0/source/boost_1_86_0.tar.gz \
-            && tar xzf boost_1_86_0.tar.gz \
-            && cd boost_1_86_0/ \
-            && ./bootstrap.sh --prefix=/usr/ \
-            && echo ${{ secrets.USERPWD }} | sudo -S ./b2 install
-      - name: Install SQLite
+          curl -s https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-2.5.0.tar.gz | tar -C /usr/local -xzf - \
+            && ldconfig
+      - name: Install Eigen
         run: |
-          echo ${{ secrets.USERPWD }} | sudo -S apt-get update \
-          && echo ${{ secrets.USERPWD }} | sudo -S  apt-get install sqlite3 libsqlite3-dev
+          wget -O eigen.zip https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.zip \
+            && unzip eigen.zip \
+            && echo ${{ secrets.USERPWD }} | sudo -S cp -r eigen-3.4.0/Eigen /usr/local/include
       - name: Project build
         run: |
           cmake . -DPATCH_VERSION=${{ github.run_number }}
