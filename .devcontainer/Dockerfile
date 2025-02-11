@@ -28,3 +28,10 @@ RUN wget -O boost_1_86_0.tar.gz https://archives.boost.io/release/1.86.0/source/
     && cd boost_1_86_0/ \
     && ./bootstrap.sh --prefix=/usr/ \
     && ./b2 install
+
+RUN curl -s https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-2.5.0.tar.gz | tar -C /usr/local -xzf - && \
+    ldconfig
+
+RUN wget -O eigen.zip https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.zip \
+    && unzip eigen.zip \
+    && cp -r eigen-3.4.0/Eigen /usr/local/include
