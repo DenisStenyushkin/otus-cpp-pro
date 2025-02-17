@@ -59,7 +59,6 @@ private:
                                 [this, self](boost::system::error_code ec, size_t length) {
                                     if (!ec) {
                                         std::string message{data_, length};
-                                        std::cout << "Received: " << message;
 
                                         auto commands = split(message, '\n');
                                         for (const std::string& command: commands){
@@ -67,7 +66,9 @@ private:
                                         }
                                     }
 
-                                    do_read();
+                                    if (ec != boost::asio::error::eof && ec != boost::asio::error::connection_reset) {
+                                        do_read();
+                                    }
                                 });
     }
 
