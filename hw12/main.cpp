@@ -35,10 +35,9 @@ int main(int argc, char* argv[]) {
                    data_providers.end(),
                    std::back_inserter(data_provider_pointers),
                    [](auto& p) { return &p; });
-
     
     const size_t max_prefix_len{20};
-    size_t min_prefix{0};
+    std::string prefix;
 
     for (size_t prefix_len = 1; prefix_len <= max_prefix_len; ++prefix_len) {
         Mapper mapper{n_mappers, data_provider_pointers,
@@ -51,17 +50,17 @@ int main(int argc, char* argv[]) {
         Reducer reducer{n_reducers, reduce_input, count};
         auto reduce_result = reducer.run();
 
-        if (std::all_of(reduce_result.begin(), reduce_result.end(),
-                        [](auto& item) { return item.second == 1; })) {
-            min_prefix = prefix_len;
+        if (reduce_result.size() == 1) {
+            prefix = reduce_result.begin()->first;
+        } else {
             break;
         }
     }
 
-    if (min_prefix > 0) {
-        std::cout << "Found min prefix_len = " << min_prefix << std::endl;
+    if (!prefix.empty()) {
+        std::cout << "Found minimum common prefix: " << prefix << std::endl;
     }
     else {
-        std::cout << "Unable to find min prefix_len <= " << max_prefix_len << std::endl;
+        std::cout << "Unable to find minimum common prefix." << std::endl;
     }
 }
