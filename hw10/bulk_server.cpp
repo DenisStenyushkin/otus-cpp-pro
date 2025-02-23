@@ -66,9 +66,9 @@ private:
                                         }
                                     }
 
-                                    if (ec != boost::asio::error::eof && ec != boost::asio::error::connection_reset) {
-                                        do_read();
-                                    }
+                                    // if (ec != boost::asio::error::eof && ec != boost::asio::error::connection_reset) {
+                                    //     do_read();
+                                    // }
                                 });
     }
 
